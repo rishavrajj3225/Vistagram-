@@ -1,6 +1,7 @@
 import express from "express";
 import cors from 'cors';
 const App = express();
+import userRouter from "./routes/user.router.js";
 
 App.use(express.urlencoded({
     extended:true,
@@ -23,5 +24,6 @@ App.use(express.static("public"));
 App.get("/", (req, res) => {
     res.send("Welcome to Vistagram");
 });
+App.use("/api/v1/users", userRouter);
 
 export {App}
