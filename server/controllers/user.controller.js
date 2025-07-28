@@ -1,6 +1,30 @@
 import { asyncHandler } from "../utils/asynchandler.js";
 import User from "../models/user.model.js";
 import { apiResponse } from "../utils/apiResponse.js";
+import jwt from "jsonwebtoken";
+
+
+// Generate access and refresh tokens
+const generateAccessAndRefereshTokens = async (userId) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return { status: 404, message: "User not found" };
+        }
+        // const accessToken = user.generateAccessToken();
+        // const refreshToken = user.generateRefreshToken();
+
+        user.refreshToken = refreshToken;
+        await user.save({ validateBeforeSave: false });
+        console.log("Refresh token saved successfully:", refreshToken, accessToken);
+
+        return { accessToken, refreshToken };
+    } catch (error) {
+        console.error("Error generating tokens:", error);
+        return { status: 500, message: "Internal server error" };
+    }
+};
+
 
 // register
 const registerUser = asyncHandler(async (req, res, next) => {
@@ -18,12 +42,12 @@ const registerUser = asyncHandler(async (req, res, next) => {
     }
 
     const user = await User.create({
-        username,
-        email,
+        username: username.toLowerCase(),
+        email: email.toLowerCase(),
         password,
     });
 
-    const createdUser = await User.findById(user._id).select("-password"); // Exclude password from the response
+    const createdUser = await User.findById(user._id).select("-password -refreshToken"); // Exclude password from the response
     if (!createdUser) {
         return res.status(500).json(new apiResponse(500, null, "User creation failed"));
     }
@@ -57,22 +81,64 @@ const loginUser = asyncHandler(async (req, res, next) => {
         return res.status(401).json(new apiResponse(401, null, "Incorrect password"));
     }
 
+    // Generate access and refresh tokens
+    const { refreshToken, accessToken } = await generateAccessAndRefereshTokens(
+        user._id
+    );
+    // console.log("Access Token:", accessToken);
+    // console.log("Refresh Token:", refreshToken);
     const loggedInUser = await User.findOne(user._id).select(
-        "-password"
+        "-password -refreshToken"
     );
 
     if (!loggedInUser) {
         return res.status(500).json(new apiResponse(500, null, "Login failed"));
     }
+
+    const options = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict", 
+    };
     return res
         .status(200)
-        .json(new apiResponse(200, loggedInUser, "Login successful"));
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .json(
+            new apiResponse(
+                200,
+                {
+                    user: loggedInUser,
+                    accessToken,
+                    refreshToken,
+                },
+                "User loggedIn successfully"
+            )
+        );
 });
 
 //logout 
 const logoutUser = asyncHandler(async (req, res, next) => {
-    // Implement logout logic if needed
-    return res.status(200).json(new apiResponse(200, null, "Logout successful"));
+    await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $set: {
+                refreshToken: undefined,
+            },
+        },
+        {
+            new: true,
+        }
+    );
+    const options = {
+        httpOnly: true,
+        secure: true,
+    };
+    return res
+        .status(200)
+        .clearCookie("accessToken", options)
+        .clearCookie("refreshToken", options)
+        .json(200, "User Logout");
 });
 
-export { registerUser, loginUser };
+export { registerUser, loginUser, logoutUser };
