@@ -98,7 +98,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
     const options = {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict", 
+        sameSite: "strict",
     };
     return res
         .status(200)
@@ -141,4 +141,13 @@ const logoutUser = asyncHandler(async (req, res, next) => {
         .json(200, "User Logout");
 });
 
-export { registerUser, loginUser, logoutUser };
+
+// current user 
+const getCurrentUser = asyncHandler(async (req, res) => {
+    return res.status(200).json({
+        status: 200,
+        user: req.user,
+        message: "Current User Fetched Successfully",
+    });
+});
+export { registerUser, loginUser, logoutUser, getCurrentUser };
