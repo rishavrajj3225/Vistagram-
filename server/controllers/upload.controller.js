@@ -8,6 +8,7 @@ export const uploadFile = async (req, res) => {
         if (!req.file) {
             return res.status(400).json(new apiResponse(400, null, "No file uploaded"));
         }
+        const userId = req.user._id;
         const username = req.user.username; 
         const { caption } = req.body;
         if (!caption) {
@@ -17,7 +18,7 @@ export const uploadFile = async (req, res) => {
         // console.log("New post data:", result);
         // console.log("Cloudinary upload result:", result);
         const newPost = new Post({
-            user: username,
+            user: userId,
             caption,
             imageUrl: result.secure_url,
             timestamp: new Date(),
