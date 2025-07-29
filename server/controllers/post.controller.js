@@ -3,7 +3,7 @@ import { apiResponse } from "../utils/apiResponse.js";
 const toggleLike = async (req, res) => {
     const userId = req.user._id;
     const { postId } = req.body;
-
+    
     if (!postId) {
         return res.status(400).json({ message: "postId is required" });
     }

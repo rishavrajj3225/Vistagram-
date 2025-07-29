@@ -144,9 +144,10 @@ const logoutUser = asyncHandler(async (req, res, next) => {
 // current user 
 const getCurrentUser = asyncHandler(async (req, res) => {
     return res.status(200).json({
-        status: 200,
+        success: true,
         user: req.user,
         message: "Current User Fetched Successfully",
     });
 });
+
 export { registerUser, loginUser, logoutUser, getCurrentUser };
