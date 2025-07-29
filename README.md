@@ -83,4 +83,5 @@ Vistagram/
 
 ---
 
-
+## For more detailed documentation
+[DOCS](server/README.md)
