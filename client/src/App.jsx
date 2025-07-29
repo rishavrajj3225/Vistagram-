@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import Profile from './pages/Profile';
 import CreatePost from './pages/CreatePost';
+// import Card from './components/Card'; 
+import SharedPost from './pages/SharedPost'; 
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/create" element={<CreatePost />} />
+        <Route path="/posts/:postId" element={<SharedPost />} />
       </Routes>
     </Router>
   );

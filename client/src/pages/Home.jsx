@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import Card from "../components/Card"; // adjust path as needed
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -17,15 +18,10 @@ function Home() {
   }, []);
 
   const handleLikeToggle = async (postId) => {
-    if (!postId) {
-      console.error("postId is undefined");
-      return;
-    }
     setPosts((prevPosts) =>
       prevPosts.map((post) => {
         if (post._id === postId) {
           const wasLiked = post.isLikedByCurrentUser;
-          // Create a new post object to avoid state mutation
           return {
             ...post,
             isLikedByCurrentUser: !wasLiked,
@@ -43,26 +39,20 @@ function Home() {
 
     try {
       const token = localStorage.getItem("accessToken");
-      if (!token) {
-        console.error("No access token found.");
-        return;
-      }
-      // console.log(`Bearer ${token}`);
+      if (!token) return;
+
       await axios.put(
-        `http://localhost:3000/api/v1/posts/like`,
+        "http://localhost:3000/api/v1/posts/like",
         { postId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
     } catch (err) {
       console.error("Error toggling like", err);
+      // Revert on failure
       setPosts((prevPosts) =>
         prevPosts.map((post) => {
           if (post._id === postId) {
-            const wasLiked = !post.isLikedByCurrentUser; // Revert the logic
+            const wasLiked = !post.isLikedByCurrentUser;
             return {
               ...post,
               isLikedByCurrentUser: !wasLiked,
@@ -79,30 +69,54 @@ function Home() {
       );
     }
   };
+
+  const handleShare = async (postId) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const response = await axios.post(
+        "http://localhost:3000/api/v1/posts/share",
+        { postId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const { shareLink, currentShareCount } = response.data;
+
+      await navigator.clipboard.writeText(shareLink);
+      alert("Share link copied to clipboard!");
+
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post._id === postId
+            ? { ...post, shareCount: currentShareCount }
+            : post
+        )
+      );
+    } catch (error) {
+      console.error("Error sharing post:", error);
+      alert("Failed to share post.");
+    }
+  };
+
   return (
     <div className="max-w-2xl mx-auto mt-8">
       <h2 className="text-2xl font-bold mb-4">📸 Recent Posts</h2>
-      {posts.length === 0 && <p>No posts yet.</p>}
-      {posts.map((post) => (
-        <div
-          key={post._id}
-          className="mb-6 bg-white shadow-md rounded-lg overflow-hidden"
-        >
-          <img src={post.imageUrl} alt="post" className="w-full h-auto" />
-          <div className="p-4">
-            <p className="mt-2 text-gray-800">{post.caption}</p>
-            <button
-              className={`mt-2 px-4 py-2 ${post.isLikedByCurrentUser ? "bg-red-500" : "bg-blue-500"
-                } text-white rounded hover:opacity-90`}
-              onClick={() => handleLikeToggle(post._id)}
-            >
-              {post.isLikedByCurrentUser ? "Dislike" : "Like"} ({post.likes?.length})
-            </button>
-          </div>
-        </div>
-      ))}
+      {posts.length === 0 ? (
+        <p>No posts yet.</p>
+      ) : (
+        posts.map((post) => (
+          <Card
+            key={post._id}
+            post={post}
+            onLikeToggle={handleLikeToggle}
+            onShare={handleShare}
+          />
+        ))
+      )}
     </div>
   );
 }
-
 export default Home;

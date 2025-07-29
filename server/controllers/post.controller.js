@@ -36,7 +36,7 @@ const toggleLike = async (req, res) => {
 const incrementShareCount = async (req, res) => {
     try {
         const { postId } = req.body;
-        console.log("Incrementing share count for postId:", postId);
+        // console.log("Incrementing share count for postId:", postId);
 
         if (!postId) {
             console.error("postId is required");
@@ -100,5 +100,29 @@ const deletePost = async (req, res) => {
         return res.status(500).json({ message: "Server error", error: error.message });
     }
 };
+const getPost = async (req, res) => {
+    const { postId } = req.params;
+    // console.log("Fetching post with ID:", postId);
+    
+    if (!postId) {
+        return res.status(400).json({ message: "postId is required" });
+    }
 
-export { toggleLike, incrementShareCount, getAllPosts, deletePost };
+    try {
+        const post = await Post.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        return res.status(200).json({
+            message: "Post fetched successfully",
+            post: post,
+        });
+    } catch (error) {
+        if (error.kind === 'ObjectId') {
+            return res.status(400).json({ message: "Invalid postId format" });
+        }
+        return res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+export { toggleLike, incrementShareCount, getAllPosts, deletePost, getPost };
