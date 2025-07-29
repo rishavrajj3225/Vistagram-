@@ -36,6 +36,7 @@ const toggleLike = async (req, res) => {
 const incrementShareCount = async (req, res) => {
     try {
         const { postId } = req.body;
+        console.log("Incrementing share count for postId:", postId);
 
         if (!postId) {
             console.error("postId is required");

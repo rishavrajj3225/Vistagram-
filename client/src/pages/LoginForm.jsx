@@ -16,10 +16,17 @@ function LoginForm() {
   const onLogin = async () => {
     try {
       setLoading(true);
-      const response = await axios.post('/api/users/login', user);
+      const response = await axios.post('http://localhost:3000/api/v1/users/login', user);
       if (response.data.success) {
+        const accessToken = response.data.data.accessToken;
+        // const refreshToken = response.data.data.refreshToken;
+
+        localStorage.setItem("accessToken", accessToken);
+        // localStorage.setItem("refreshToken", refreshToken);
+
+
         alert("Login successful!");
-        navigate('/home');
+        navigate('/');
       } else {
         alert(response.data.error || "Login failed. Please try again.");
       }
