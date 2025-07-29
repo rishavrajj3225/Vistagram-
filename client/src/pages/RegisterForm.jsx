@@ -16,7 +16,7 @@ function RegisterForm() {
   const onSignup = async () => {
     try {
       setLoading(true);
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/signup`, user);
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/register`, user);
       if (response.data.success) {
         alert("Signup successful! Please login.");
         navigate('/login');
