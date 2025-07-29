@@ -171,3 +171,6 @@ Welcome to the Vistagram API! This document describes the available endpoints fo
 - Deleting posts is irreversible.
 
 ---
+
+
+Postman Setup - [Postman Documentation](https://web.postman.co/workspace/My-Workspace~20747378-99bb-413f-82f8-d8bb6ebc276e/collection/28033151-48b58036-64c2-4b0b-865e-c69727b7fb55?action=share&source=copy-link&creator=28033151)

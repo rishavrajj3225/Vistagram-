@@ -1,11 +1,12 @@
 # Vistagram
-
 A full-stack project with separate frontend and backend.
+
 ## Tech Stack
 
 - **Frontend:** React, Redux, Tailwind CSS, Axios
 - **Backend:** Node.js, Express.js, MongoDB, Mongoose, JWT
 - **Other:** REST API, dotenv, Nodemon, ESLint, Prettier
+
 ## Project Structure
 
 ```
@@ -23,13 +24,13 @@ Vistagram/
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) 
+- [Node.js](https://nodejs.org/)
 
 ---
 
 ## Backend Setup
 
-1. **Navigate to backend directory:**
+1. **Navigate to the backend directory:**
     ```bash
     cd backend
     ```
@@ -42,7 +43,7 @@ Vistagram/
     ```
 
 3. **Configure environment variables:**
-    - Create a `.env` file based on `.env.example`
+    - Create a `.env` file based on `.env.example`.
 
 4. **Run the backend server:**
     ```bash
@@ -55,7 +56,7 @@ Vistagram/
 
 ## Frontend Setup
 
-1. **Navigate to frontend directory:**
+1. **Navigate to the frontend directory:**
     ```bash
     cd frontend
     ```
@@ -83,5 +84,13 @@ Vistagram/
 
 ---
 
-## For more detailed documentation
-[DOCS](server/README.md)
+## More Documentation
+
+- [Server Documentation](server/README.md)
+- [Backend Swagger JSON](server/swagger-output.json)
+
+To generate the Swagger JSON documentation, run:
+```bash
+npm run swagger
+```
+after completing the setup.
