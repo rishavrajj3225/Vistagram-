@@ -60,7 +60,7 @@ const Navbar = () => {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/signup" className="hover:text-blue-600 dark:hover:text-blue-400">
+                                    <a href="/register" className="hover:text-blue-600 dark:hover:text-blue-400">
                                         Signup
                                     </a>
                                 </li>

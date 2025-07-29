@@ -10,7 +10,7 @@ export default function Profile() {
             return;
         }
         axios
-            .get(`${import.meta.env.VITE_BACKEND_URL}/users/current`, {
+            .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/current`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
