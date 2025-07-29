@@ -12,7 +12,7 @@ const SharedPost = () => {
         const fetchPost = async () => {
             try {
                 console.log("Fetched post data:", postId);
-                const res = await axios.get(`http://localhost:3000/api/v1/posts/${postId}`);
+                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/posts/${postId}`);
                 setPost(res.data.post);
             } catch (err) {
                 console.error("Error fetching post:", err);

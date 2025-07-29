@@ -7,7 +7,7 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/v1/posts/all")
+      .get(`${import.meta.env.VITE_BACKEND_URL}/posts/all`)
       .then((res) => {
         setPosts(Array.isArray(res.data.posts) ? res.data.posts : []);
       })
@@ -42,7 +42,7 @@ function Home() {
       if (!token) return;
 
       await axios.put(
-        "http://localhost:3000/api/v1/posts/like",
+        `${import.meta.env.VITE_BACKEND_URL}/posts/like`,
         { postId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -74,7 +74,7 @@ function Home() {
     try {
       const token = localStorage.getItem("accessToken");
       const response = await axios.post(
-        "http://localhost:3000/api/v1/posts/share",
+        `${import.meta.env.VITE_BACKEND_URL}/posts/share`,
         { postId },
         {
           headers: {

@@ -16,7 +16,7 @@ function LoginForm() {
   const onLogin = async () => {
     try {
       setLoading(true);
-      const response = await axios.post('http://localhost:3000/api/v1/users/login', user);
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/login`, user);
       if (response.data.success) {
         const accessToken = response.data.data.accessToken;
         // const refreshToken = response.data.data.refreshToken;

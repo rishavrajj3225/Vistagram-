@@ -50,7 +50,7 @@ const navigate = useNavigate();
 
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:3000/api/v1/posts/create", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/posts/create`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
