@@ -3,12 +3,11 @@ import { uploadToCloudinary } from "../utils/fileUpload.js";
 import Post from "../models/post.model.js";
 import {apiResponse} from "../utils/apiResponse.js";
 export const uploadFile = async (req, res) => {
-    try {
 
+    try {
         if (!req.file) {
             return res.status(400).json(new apiResponse(400, null, "No file uploaded"));
         }
-        const userId = req.user._id; 
         const username = req.user.username; 
         const { caption } = req.body;
         if (!caption) {
