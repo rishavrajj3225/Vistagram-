@@ -5,6 +5,7 @@ import LoginForm from './pages/LoginForm';
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import Profile from './pages/Profile';
+import CreatePost from './pages/CreatePost';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/create" element={<CreatePost />} />
       </Routes>
     </Router>
   );
