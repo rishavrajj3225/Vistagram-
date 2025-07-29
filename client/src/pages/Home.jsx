@@ -103,7 +103,7 @@ function Home() {
 
   return (
     <div className="max-w-2xl mx-auto mt-8">
-      <h2 className="text-2xl font-bold mb-4">📸 Recent Posts</h2>
+      <h2 className="text-2xl font-bold mb-4">All Posts</h2>
       {posts.length === 0 ? (
         <p>No posts yet.</p>
       ) : (
