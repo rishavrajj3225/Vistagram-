@@ -8,11 +8,10 @@ const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-router.post("/create", upload.single("image"), verifyJWT, uploadFile);
 router.route("/create").post(
     upload.single("image"),
-    verifyJWT,
-    uploadFile,
+    verifyJWT, 
+    uploadFile
 );
 
 export default router;

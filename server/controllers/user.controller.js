@@ -11,13 +11,12 @@ const generateAccessAndRefereshTokens = async (userId) => {
         if (!user) {
             return { status: 404, message: "User not found" };
         }
-        // const accessToken = user.generateAccessToken();
-        // const refreshToken = user.generateRefreshToken();
+        const accessToken = user.generateAccessToken();
+        const refreshToken = user.generateRefreshToken();
 
         user.refreshToken = refreshToken;
         await user.save({ validateBeforeSave: false });
-        console.log("Refresh token saved successfully:", refreshToken, accessToken);
-
+        // console.log("Refresh token saved successfully:", refreshToken, accessToken);
         return { accessToken, refreshToken };
     } catch (error) {
         console.error("Error generating tokens:", error);

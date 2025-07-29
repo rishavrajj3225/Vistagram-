@@ -1,23 +1,24 @@
 // controllers/upload.controller.js
 import { uploadToCloudinary } from "../utils/fileUpload.js";
+import Post from "../models/post.model.js";
+import {apiResponse} from "../utils/apiResponse.js";
 export const uploadFile = async (req, res) => {
     try {
 
         if (!req.file) {
             return res.status(400).json(new apiResponse(400, null, "No file uploaded"));
         }
-        console.log("File received:", req.file);
-        
+        const userId = req.user._id; 
+        // console.log("File received:", req.file);
         const { caption } = req.body;
         if (!caption) {
             caption = " ";
         }
         const result = await uploadToCloudinary(req.file.buffer);
-
         // console.log("New post data:", result);
         // console.log("Cloudinary upload result:", result);
         const newPost = new Post({
-            username: req.user.username,
+            user: userId,
             caption,
             imageUrl: result.secure_url,
             timestamp: new Date(),
