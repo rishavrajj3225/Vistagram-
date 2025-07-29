@@ -1,9 +1,7 @@
 import dotenv from "dotenv";
-import express from "express";
 import mongoose from "mongoose";
 import { App } from "./app.js";
 
-const app = express();
 dotenv.config();
 
 //DB connection
