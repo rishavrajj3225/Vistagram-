@@ -3,7 +3,8 @@ import express from "express";
 import multer from "multer";
 import { uploadFile } from "../controllers/upload.controller.js";
 import { verifyJWT } from "../middlewares/auth.js";
-import { toggleLike } from "../controllers/post.controller.js";
+import { toggleLike,incrementShareCount } from "../controllers/post.controller.js";
+
 const router = express.Router();
 
 const storage = multer.memoryStorage();
@@ -15,5 +16,6 @@ router.route("/create").post(
     uploadFile
 );
 router.route("/like").put(verifyJWT, toggleLike);
+router.route("/share").post(verifyJWT, incrementShareCount);
 
 export default router;
