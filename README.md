@@ -45,13 +45,18 @@ Vistagram/
 3. **Configure environment variables:**
     - Create a `.env` file based on `.env.example`.
 
+
 4. **Run the backend server:**
     ```bash
     npm run dev
     # or
     yarn dev
     ```
-
+5. ## Seeder
+    ```bash
+    npm run seeder
+    ```
+To populate the post data into your database.
 ---
 
 ## Frontend Setup

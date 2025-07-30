@@ -67,7 +67,7 @@ const getAllPosts = async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 50;
         const skip = (page - 1) * limit;
-        const posts = await Post.find().maxTimeMS(10000).skip(skip).limit(limit); // Fetches all posts
+        const posts = await Post.find().skip(skip).limit(limit); // Fetches all posts
         // console.log(posts);
         return res.status(200).json({
             message: "Posts fetched successfully",
