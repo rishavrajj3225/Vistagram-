@@ -28,6 +28,8 @@ const PostSchema = new mongoose.Schema({
         type: Number,
         default: 0
     }
+},{
+    timestamps: true
 });
 const Post = mongoose.model('postschemas', PostSchema);
 export default Post;
