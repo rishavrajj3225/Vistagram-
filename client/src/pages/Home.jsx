@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Card from "../components/Card"; // adjust path as needed
+import Card from "../components/Card"; 
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -102,21 +102,24 @@ function Home() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-8">
+    <div className="max-w-5xl mx-auto mt-8">
       <h2 className="text-2xl font-bold mb-4">All Posts</h2>
       {posts.length === 0 ? (
         <p>No posts yet.</p>
       ) : (
-        posts.map((post) => (
-          <Card
-            key={post._id}
-            post={post}
-            onLikeToggle={handleLikeToggle}
-            onShare={handleShare}
-          />
-        ))
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {posts.map((post) => (
+            <Card
+              key={post._id}
+              post={post}
+              onLikeToggle={handleLikeToggle}
+              onShare={handleShare}
+            />
+          ))}
+        </div>
       )}
     </div>
   );
 }
+
 export default Home;
