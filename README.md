@@ -93,9 +93,11 @@ To populate the post data into your database.
 
 - [Server Documentation](server/README.md)
 - [Backend Swagger JSON](server/swagger-output.json)
+- [Frontend Documentation](client/README.md)
 
 To generate the Swagger JSON documentation, run:
 ```bash
 npm run swagger
 ```
 after completing the setup.
+
