@@ -1,23 +1,46 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Card from "../components/Card"; 
+import Card from "../components/Card"; // Updated import name
 
 function Home() {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Add isLoggedIn function
+  const isLoggedIn = () => {
+    return !!localStorage.getItem("accessToken");
+  };
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/posts/all`)
-      .then((res) => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem("accessToken");
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/v1/posts/all`,
+          { headers }
+        );
+
         setPosts(Array.isArray(res.data.posts) ? res.data.posts : []);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error("Error fetching posts", err);
         setPosts([]);
-      });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
   }, []);
 
   const handleLikeToggle = async (postId) => {
+    // Check if user is logged in before proceeding
+    if (!isLoggedIn()) {
+      return; // Card component will handle redirect
+    }
+
     setPosts((prevPosts) =>
       prevPosts.map((post) => {
         if (post._id === postId) {
@@ -71,6 +94,11 @@ function Home() {
   };
 
   const handleShare = async (postId) => {
+    // Check if user is logged in before proceeding
+    if (!isLoggedIn()) {
+      return; // Card component will handle redirect
+    }
+
     try {
       const token = localStorage.getItem("accessToken");
       const response = await axios.post(
@@ -104,7 +132,9 @@ function Home() {
   return (
     <div className="max-w-5xl mx-auto mt-8">
       <h2 className="text-2xl font-bold mb-4">All Posts</h2>
-      {posts.length === 0 ? (
+      {loading ? (
+        <p>Loading posts...</p>
+      ) : posts.length === 0 ? (
         <p>No posts yet.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -114,6 +144,7 @@ function Home() {
               post={post}
               onLikeToggle={handleLikeToggle}
               onShare={handleShare}
+              isLoggedIn={isLoggedIn} // Pass the function itself
             />
           ))}
         </div>
